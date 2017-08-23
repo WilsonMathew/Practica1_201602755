@@ -17,7 +17,7 @@ public class Gaspar_Laynez_201602755 {
     
     // Menu 2
     private static Scanner opEJuego = new Scanner(System.in);
-    private static char opcJuego;
+    private static char opcJuego = 'n';
     
     // Matriz Logica
     private static int nDif = 4; // difucultad del juego
@@ -28,10 +28,10 @@ public class Gaspar_Laynez_201602755 {
     private static int numBom = 4;
     
     // Matriz Interfase
- //   private static String matrizI[][]= new String[nDif][nDif];
+     //   private static String matrizI[][]= new String[nDif][nDif];
     private static String matrizI[][] = new String[nDif][nDif];
     
-    //
+    // variables de interaccion usuario y juego.
     private static Scanner volE = new Scanner(System.in);
     private static String opV;
     private static int opF, opC;
@@ -44,20 +44,34 @@ public class Gaspar_Laynez_201602755 {
     }
     
     
-    public static void juego(String nivel){
-         
+    public static void juego(){
+        
+        String nivel="";
+        
+        if(nDif ==4){
+            nivel = "NIVEL PRINCIPIANTE";
+        }else if(nDif == 6){
+            nivel = "NIVEL INTERMEDIO";
+        }else{
+            nivel = "NIVEL EXPERTO";
+        }
+        
         //Mostrando titulo
         System.out.println("                    " + nivel);
-        
-        matrizL = matrizLogica();        
-        
+
         do{
             matrizInterfase();
-            menuJuego();
-            opcionJuego();            
+            opcionJuego();   
+            menuJuego();         
         }while(opcJuego !='s');
     }
     
+    // Para crea una nueva matriz logica. Escencialmente para reiniciar el juego
+    public static void juegoL(){
+        matrizL = matrizLogica(); 
+    }
+    
+    // Asigna bombas, llena matriz. Muestra matriz solucion, y llena matriz usuario con [X]
     public static int[][] matrizLogica(){
         
         
@@ -74,7 +88,6 @@ public class Gaspar_Laynez_201602755 {
             }else{
                 matrizL[fR][cR] = -1;
             }
-            System.out.println(fR + " " + cR);
         }
         
         
@@ -120,66 +133,80 @@ public class Gaspar_Laynez_201602755 {
         
         System.out.println("");
         
+        // Muerstar matriz Solucion 
+        
         for(int i = 0; i < matrizL.length;i++){
             for(int j = 0; j < matrizL.length; j++){
-                System.out.print(matrizL[i][j]+ " ");
+                if(matrizL[i][j] == -1){
+                    System.out.print(matrizL[i][j] + " ");
+                } else{
+                    System.out.print(" " + matrizL[i][j] + " ");
+                }
+                
             }
             System.out.println("");
         }
         
         System.out.println("");
+        
+        updateVUsuario();
+        
+        return matrizL;
+    }
+    
+    //Matriz asigna [x] a la matriz Interfas  
+    public static void updateVUsuario(){
+        
         // Matriz Interfase
+        
         for(int i = 0; i < matrizI.length;i++){
             for(int j = 0; j < matrizI.length;j++){
                 matrizI[i][j] = "[X]";
             }
         }
-        
-        return matrizL;
     }
     
+    // Chequea cordenada ingresada y la pone en matriz Interfase para ser mostrada
+    // En cruz de acuerdo al algoritmo indicado
     public static void matrizInterfase(){
         
         /* Matriz Interfase*/
         //String matrizI [][] = new String[nDif][nDif];
         
-        for(int i = 0; i < matrizI.length;i++){
-            for(int j = 0; j < matrizI.length; j++){
-                try{
-                    if(matrizL[opF-1][opC-1] != -1){
-                        matrizI[opF-1][opC-1] = " " + String.valueOf(matrizL[opF-1][opC-1]) + " ";
-                        for(int k = 0; k < 4; k++){
-                           
-                            try{
-                                switch(k){
-                                    case 0:
-                                        if(matrizL[opF-2][opC-1] != -1){
-                                            matrizI[opF-2][opC-1] = " " + String.valueOf(matrizL[opF-2][opC-1]) + " ";   
-                                        }
-                                        break;
-                                    case 1:
-                                        if(matrizL[opF][opC-1] != -1){
-                                            matrizI[opF][opC-1] = " " + String.valueOf(matrizL[opF][opC-1]) + " ";   
-                                        }
-                                        break;
-                                    case 2:
-                                        if(matrizL[opF-1][opC-2] != -1){
-                                            matrizI[opF-1][opC-2] = " " + String.valueOf(matrizL[opF-1][opC-2]) + " ";   
-                                        }
-                                        break;
-                                    case 3:
-                                        if(matrizL[opF-1][opC] != -1){
-                                            matrizI[opF-1][opC] = " " + String.valueOf(matrizL[opF-1][opC]) + " ";   
-                                        }
-                                        break;
+        try{
+            if(matrizL[opF-1][opC-1] != -1){
+                matrizI[opF-1][opC-1] = " " + String.valueOf(matrizL[opF-1][opC-1]) + " ";
+                for(int k = 0; k < 4; k++){
+
+                    try{
+                        switch(k){
+                            case 0:
+                                if(matrizL[opF-2][opC-1] != -1){
+                                    matrizI[opF-2][opC-1] = " " + String.valueOf(matrizL[opF-2][opC-1]) + " ";   
                                 }
-                            }catch(Exception e){}
+                                break;
+                            case 1:
+                                if(matrizL[opF][opC-1] != -1){
+                                    matrizI[opF][opC-1] = " " + String.valueOf(matrizL[opF][opC-1]) + " ";   
+                                }
+                                break;
+                            case 2:
+                                if(matrizL[opF-1][opC-2] != -1){
+                                    matrizI[opF-1][opC-2] = " " + String.valueOf(matrizL[opF-1][opC-2]) + " ";   
+                                }
+                                break;
+                            case 3:
+                                if(matrizL[opF-1][opC] != -1){
+                                    matrizI[opF-1][opC] = " " + String.valueOf(matrizL[opF-1][opC]) + " ";   
+                                }
+                                break;
                         }
-                    }
-                }catch(Exception e){}
+                    }catch(Exception e){}
+                }
             }
-        }
-        
+        }catch(Exception e){}
+
+        // Muestra la matriz interfase acutalizada
         for(int i = 0; i < matrizI.length;i++){
             System.out.print("                  ");
             for(int j = 0; j < matrizI.length; j++){
@@ -192,13 +219,15 @@ public class Gaspar_Laynez_201602755 {
     public static void voltear(){
         System.out.println("                 --------------------------------");
         System.out.println("                    Ingrese Fila y Columna");
-        System.out.print("                                  ");
+        System.out.print("                             ");
         opV = volE.nextLine();
         
         String[] parts = opV.split(",");
         
+        //Eliminar espacios
         parts[0] = parts[0].replaceAll("\\s","");
         parts[1] = parts[1].replaceAll("\\s", "");
+        
         System.out.println(parts[0]);
         System.out.println(parts[1]);
         
@@ -206,9 +235,11 @@ public class Gaspar_Laynez_201602755 {
             opF = Integer.parseInt(parts[0]);
             opC = Integer.parseInt(parts[1]);
         }catch(Exception e){
-            System.out.println("Opcion invalida trate de nuevo");
+            System.out.println("Opcion invalida");
+            System.out.println("");
+            voltear();
         }       
-        
+        juego();
         
     }
     //Menu de Pantalla 2
@@ -221,14 +252,19 @@ public class Gaspar_Laynez_201602755 {
             case 'v':
                 opcJuego = 's';
                 voltear();
-                System.out.println("Esta en opcion v"); 
                 break;
             case 'r':
                 opcJuego = 's';
-                System.out.println("Esta en opcion r");                
+                opF = 0;
+                opC = 0;
+                juegoL();
+                juego();
                 break;
             case 's':
                 menu();
+                break;
+                // no haga nada para inicializar.
+            case 'n':
                 break;
             default: 
                 System.out.println("No es opcion, trate de nuevo");
@@ -269,21 +305,24 @@ public class Gaspar_Laynez_201602755 {
                 nDif = 4;
                 matrizI = new String[nDif][nDif];
                 numBom = 4;
-                juego("NIVEL PRINCIPIANTE");
+                juegoL();
+                juego();
                 break;
             case 2:
                 opMenu1 = 4;
                 nDif = 6;
                 matrizI = new String[nDif][nDif];
                 numBom = 8;
-                juego("NIVEL INTERMEDIO");
+                juegoL();
+                juego();
                 break;
             case 3:
                 opMenu1 = 4;
                 nDif = 8;
                 matrizI = new String[nDif][nDif];
                 numBom = 12;
-                juego("NIVEL EXPERTO");
+                juegoL();
+                juego();
                 break;
             case 4:
                 break;
