@@ -28,8 +28,8 @@ public class Gaspar_Laynez_201602755 {
     private static int numBom = 4;
     
     // Matriz Interfase
-    private static String matrizI[][]= new String[nDif][nDif];
-    
+ //   private static String matrizI[][]= new String[nDif][nDif];
+    private static String matrizI[][] = new String[nDif][nDif];
     
     //
     private static Scanner volE = new Scanner(System.in);
@@ -147,29 +147,29 @@ public class Gaspar_Laynez_201602755 {
             for(int j = 0; j < matrizI.length; j++){
                 try{
                     if(matrizL[opF-1][opC-1] != -1){
-                        matrizI[opF-1][opC-1] = String.valueOf(matrizL[opF-1][opC-1]);
+                        matrizI[opF-1][opC-1] = " " + String.valueOf(matrizL[opF-1][opC-1]) + " ";
                         for(int k = 0; k < 4; k++){
                            
                             try{
                                 switch(k){
                                     case 0:
                                         if(matrizL[opF-2][opC-1] != -1){
-                                            matrizI[opF-2][opC-1] = String.valueOf(matrizL[opF-2][opC-1]);   
+                                            matrizI[opF-2][opC-1] = " " + String.valueOf(matrizL[opF-2][opC-1]) + " ";   
                                         }
                                         break;
                                     case 1:
                                         if(matrizL[opF][opC-1] != -1){
-                                            matrizI[opF][opC-1] = String.valueOf(matrizL[opF][opC-1]);   
+                                            matrizI[opF][opC-1] = " " + String.valueOf(matrizL[opF][opC-1]) + " ";   
                                         }
                                         break;
                                     case 2:
                                         if(matrizL[opF-1][opC-2] != -1){
-                                            matrizI[opF-1][opC-2] = String.valueOf(matrizL[opF-1][opC-2]);   
+                                            matrizI[opF-1][opC-2] = " " + String.valueOf(matrizL[opF-1][opC-2]) + " ";   
                                         }
                                         break;
                                     case 3:
                                         if(matrizL[opF-1][opC] != -1){
-                                            matrizI[opF-1][opC] = String.valueOf(matrizL[opF-1][opC]);   
+                                            matrizI[opF-1][opC] = " " + String.valueOf(matrizL[opF-1][opC]) + " ";   
                                         }
                                         break;
                                 }
@@ -267,18 +267,21 @@ public class Gaspar_Laynez_201602755 {
             case 1:
                 opMenu1 = 4;;
                 nDif = 4;
+                matrizI = new String[nDif][nDif];
                 numBom = 4;
                 juego("NIVEL PRINCIPIANTE");
                 break;
             case 2:
                 opMenu1 = 4;
                 nDif = 6;
+                matrizI = new String[nDif][nDif];
                 numBom = 8;
                 juego("NIVEL INTERMEDIO");
                 break;
             case 3:
                 opMenu1 = 4;
                 nDif = 8;
+                matrizI = new String[nDif][nDif];
                 numBom = 12;
                 juego("NIVEL EXPERTO");
                 break;
