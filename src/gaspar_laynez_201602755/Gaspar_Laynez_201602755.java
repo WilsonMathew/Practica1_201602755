@@ -251,12 +251,20 @@ public class Gaspar_Laynez_201602755 {
             voltear();
         }
         
-        if(opF  >= matrizI.length || opC >= matrizI.length ){
+        // validacion de datos mayor al tamaño de la matriz
+        if(opF  > matrizI.length || opC > matrizI.length ){
             System.out.println("cordenada no esta en el rango.");
             voltear();
         }
+        
+        // validacion de datos menores al tamaño de la matriz
+        if(opF  < 1 || opC < 1 ){
+            System.out.println("cordenada no esta en el rango.");
+            voltear();
+        }
+        
         // preguntar si esta seguro de ingresar cordenada 
-        System.out.print("Quiere destapar (" + opF + "," + opC + ") Y o N: ");
+        System.out.print("                    Quiere destapar (" + opF + "," + opC + ") Y o N: ");
         char val = scV.next().trim().charAt(0);
 
         // si no esta seguro le regresa al menu
@@ -273,16 +281,39 @@ public class Gaspar_Laynez_201602755 {
             for(int j = 0; j < matrizI.length; j++ ){
                 if(matrizI[i][j].compareTo("[X]")==0){
                     gano++;
+                    perdio = false;
                 }
             }
         }
         
         // verifica si el usuario gano
         if(gano-1 == numBom && !perdio){
-            System.out.println("FELICIDADES!!! HA GANADO EL JUEGO");
-            opcJuego = 's';
+            System.out.println("");
+            System.out.println("                        FELICIDADES!!! HA GANADO EL JUEGO");
             System.out.println("");
             mSolucion();
+            System.out.println("");
+            System.out.println("Nota: -1 representa bomba");
+            
+            // Despues de ganar preguntar si quiero volver a jugar
+            System.out.println("");
+            System.out.print("Desea volvera jugar? Y o N: ");
+            char volverGano = scV.next().trim().charAt(0);
+            
+            // si Y volver a jguar en mismo nivel
+            // si N ir a menu principal
+            if(volverGano == 'y' || volverGano == 'Y'){
+                opF = 0;
+                opC = 0;
+                matrizL = matrizLogica();
+                juego();
+            }else{
+                opF = 0;
+                opC = 0;
+                matrizL = matrizLogica();
+                menu();
+                opcJuego = 's';
+            }
         }
         
         // Analizar el usuario elijio una bomba.
@@ -292,15 +323,35 @@ public class Gaspar_Laynez_201602755 {
         
         // Si elegio una bomba mandar un mensaje indicando que perdio y la solucion
         if(perdio){
-            opcJuego = 's';
-            System.out.println("Usted a perdido");
+            System.out.println("");
+            System.out.println("                        PERDIO!!! :(");
             System.out.println();
             mSolucion();
+            System.out.println("");
+            System.out.println("Nota: -1 representa bomba");
+            
+            // que hacer si el usuario pierde?  y si quiere volver a jugar o no
+            System.out.print("Desea volvera jugar? Y o N: ");
+            char volverPerdio = scV.next().trim().charAt(0);
+            
+            if(volverPerdio == 'y' || volverPerdio == 'Y'){
+                opF = 0;
+                opC = 0;
+                matrizL = matrizLogica();
+                juego();
+            }else{
+                opF = 0;
+                opC = 0;
+                matrizL = matrizLogica();
+                menu();
+                opcJuego = 's';
+            }
+            
         }else{
             // verifica si ya fue descubierta la casilla.
             try{
                 if(matrizI[opF-1][opC-1].compareTo("[X]")!=0 ){
-                    System.out.println("Ya fue descubierto. Vuelva a seleccionar");
+                    System.out.println("                    Ya fue descubierto. Vuelva a seleccionar");
                     voltear();
                 }else{
                     System.out.println("");
@@ -308,10 +359,7 @@ public class Gaspar_Laynez_201602755 {
                 }
             }catch(Exception e){}
         }
-        
-
     }
-    
     
     //Menu de Pantalla 2
     // Menu funcional regresa un caracter para controlar ciclo
@@ -321,18 +369,37 @@ public class Gaspar_Laynez_201602755 {
             case 'v':
                 voltear();         
                 break;
+            case 'V':
+                voltear();
+                break;
+                
             case 'r':
                 opF = 0;
                 opC = 0;
                 matrizL = matrizLogica();
                 juego();
                 break;
+            case 'R':
+                opF = 0;
+                opC = 0;
+                matrizL = matrizLogica();
+                juego();
+                break;
+                
             case 's':
                 opF = 0;
                 opC = 0;
                 matrizL = matrizLogica();
                 menu();
                 break;
+            case 'S':
+                opcJuego ='s';
+                opF = 0;
+                opC = 0;
+                matrizL = matrizLogica();
+                menu();
+                break;
+                
                 // no haga nada para inicializar.
             case 'n':
                 break;
@@ -395,6 +462,7 @@ public class Gaspar_Laynez_201602755 {
                 juego();
                 break;
             case 4:
+                System.out.println("                    Gracias Por Jugar!!");
                 break;
             default :
                 System.out.println();
