@@ -1,4 +1,5 @@
 package gaspar_laynez_201602755;
+import java.util.InputMismatchException;
 import java.util.Random;
 import java.util.Scanner;
 /**
@@ -36,6 +37,8 @@ public class Gaspar_Laynez_201602755 {
     private static String opV;
     private static int opF, opC;
     
+    // Ganar o perder
+    private static boolean perdio = false;
     
     public static void main(String[] args) {
         // Doing menu
@@ -43,11 +46,11 @@ public class Gaspar_Laynez_201602755 {
         menu();
     }
     
-    
+    // Juega hasta que el usuario salga o hasta perder o ganar
     public static void juego(){
         
         String nivel="";
-        
+        // Determina el nivel del juego
         if(nDif ==4){
             nivel = "NIVEL PRINCIPIANTE";
         }else if(nDif == 6){
@@ -59,21 +62,15 @@ public class Gaspar_Laynez_201602755 {
         //Mostrando titulo
         System.out.println("                    " + nivel);
 
-        do{
+        while(opcJuego !='s'){
             matrizInterfase();
             opcionJuego();   
-            menuJuego();         
-        }while(opcJuego !='s');
+            menuJuego();
+        }
     }
     
-    // Para crea una nueva matriz logica. Escencialmente para reiniciar el juego
-    public static void juegoL(){
-        matrizL = matrizLogica(); 
-    }
-    
-    // Asigna bombas, llena matriz. Muestra matriz solucion, y llena matriz usuario con [X]
+    // Asigna bombas, llena matriz.
     public static int[][] matrizLogica(){
-        
         
         /*Matriz Logica*/
         int matrizL[][] = new int[nDif][nDif];
@@ -89,7 +86,6 @@ public class Gaspar_Laynez_201602755 {
                 matrizL[fR][cR] = -1;
             }
         }
-        
         
         // Asigna numero asociado con bombas a su alreadedo 
         for(int i = 0; i < matrizL.length;i++){
@@ -134,6 +130,32 @@ public class Gaspar_Laynez_201602755 {
         System.out.println("");
         
         // Muerstar matriz Solucion 
+        for(int i = 0; i < matrizL.length;i++){
+            for(int j = 0; j < matrizL.length; j++){
+                if(matrizL[i][j] == -1){
+                    System.out.print(matrizL[i][j] + " ");
+                } else{
+                    System.out.print(" " + matrizL[i][j] + " ");
+                }    
+            }
+            System.out.println("");
+        }
+        
+        System.out.println("");
+
+        // Matriz Interfase asigna [X] a la matriz que el usuario mira
+        for(int i = 0; i < matrizI.length;i++){
+            for(int j = 0; j < matrizI.length;j++){
+                matrizI[i][j] = "[X]";
+            }
+        }
+        
+        return matrizL;
+    }
+    
+    //Muestra matriz solucion
+    public static void mSolucion(){
+        // Muerstar matriz Solucion 
         
         for(int i = 0; i < matrizL.length;i++){
             for(int j = 0; j < matrizL.length; j++){
@@ -142,28 +164,11 @@ public class Gaspar_Laynez_201602755 {
                 } else{
                     System.out.print(" " + matrizL[i][j] + " ");
                 }
-                
             }
             System.out.println("");
         }
         
         System.out.println("");
-        
-        updateVUsuario();
-        
-        return matrizL;
-    }
-    
-    //Matriz asigna [x] a la matriz Interfas  
-    public static void updateVUsuario(){
-        
-        // Matriz Interfase
-        
-        for(int i = 0; i < matrizI.length;i++){
-            for(int j = 0; j < matrizI.length;j++){
-                matrizI[i][j] = "[X]";
-            }
-        }
     }
     
     // Chequea cordenada ingresada y la pone en matriz Interfase para ser mostrada
@@ -171,8 +176,8 @@ public class Gaspar_Laynez_201602755 {
     public static void matrizInterfase(){
         
         /* Matriz Interfase*/
-        //String matrizI [][] = new String[nDif][nDif];
-        
+        // Chequea si el numero ingresado en voltear no es -1
+        // Lo destapa segun el agoritmo en forma de cruz
         try{
             if(matrizL[opF-1][opC-1] != -1){
                 matrizI[opF-1][opC-1] = " " + String.valueOf(matrizL[opF-1][opC-1]) + " ";
@@ -205,7 +210,7 @@ public class Gaspar_Laynez_201602755 {
                 }
             }
         }catch(Exception e){}
-
+        
         // Muestra la matriz interfase acutalizada
         for(int i = 0; i < matrizI.length;i++){
             System.out.print("                  ");
@@ -216,6 +221,8 @@ public class Gaspar_Laynez_201602755 {
         }
     }
     
+    // Pide una cordenada, la convierte en entero. verifica si ya fue escojida
+    // Verifica si es bomba, y indica que perdio.
     public static void voltear(){
         System.out.println("                 --------------------------------");
         System.out.println("                    Ingrese Fila y Columna");
@@ -228,9 +235,8 @@ public class Gaspar_Laynez_201602755 {
         parts[0] = parts[0].replaceAll("\\s","");
         parts[1] = parts[1].replaceAll("\\s", "");
         
-        System.out.println(parts[0]);
-        System.out.println(parts[1]);
-        
+        // Tratar de converti parte 1 y 2 a integer si no se puede
+        // volver a pedir posicion devido a que es invalida
         try{
             opF = Integer.parseInt(parts[0]);
             opC = Integer.parseInt(parts[1]);
@@ -238,26 +244,63 @@ public class Gaspar_Laynez_201602755 {
             System.out.println("Opcion invalida");
             System.out.println("");
             voltear();
-        }       
-        juego();
+        }
         
+        int gano = 0;
+        for(int i = 0; i < matrizI.length; i++ ){
+            for(int j = 0; j < matrizI.length; j++ ){
+                if(matrizI[i][j].compareTo("[X]")==0){
+                    gano++;
+                }
+            }
+        }
+        
+        System.out.println("gano:" + gano);
+        if(gano-1 == numBom && !perdio){
+            System.out.println("FELICIDADES!!! HA GANADO EL JUEGO");
+            opcJuego = 's';
+            System.out.println("");
+            mSolucion();
+        }
+        
+        // Analizar el usuario elijio una bomba.
+        if(matrizL[opF-1][opC-1] == -1 ){
+            perdio = true;
+        }
+        
+        // Si elegio una bomba mandar un mensaje indicando que perdio y la solucion
+        if(perdio){
+            opcJuego = 's';
+            System.out.println("Usted a perdido");
+            System.out.println();
+            mSolucion();
+        }else{
+            // verifica si ya fue descubierta la casilla.
+            try{
+                if(matrizI[opF-1][opC-1].compareTo("[X]")!=0 ){
+                    System.out.println("Ya fue descubierto. Vuelva a seleccionar");
+                    voltear();
+                }else{
+                    juego();
+                }
+            }catch(Exception e){}
+        }
+        
+
     }
+    
     //Menu de Pantalla 2
     // Menu funcional regresa un caracter para controlar ciclo
     public static void menuJuego(){
         
-        System.out.println("char:  " + opcJuego);
-        
         switch(opcJuego){
             case 'v':
-                opcJuego = 's';
-                voltear();
+                voltear();         
                 break;
             case 'r':
-                opcJuego = 's';
                 opF = 0;
                 opC = 0;
-                juegoL();
+                matrizL = matrizLogica();
                 juego();
                 break;
             case 's':
@@ -287,16 +330,13 @@ public class Gaspar_Laynez_201602755 {
         System.out.print("                    Ingresar Opcion: "); 
         
         opcJuego = opEJuego.next().trim().charAt(0);
-
-    } 
-    
+    }    
     
     // MENU DE PANTALLA 1
     // Menu funcional. Dirije opciones segun opcion seleccionada.
     public static void menu(){
         
         do{
-
             menuText();
             
         switch(opMenu1){
@@ -305,7 +345,7 @@ public class Gaspar_Laynez_201602755 {
                 nDif = 4;
                 matrizI = new String[nDif][nDif];
                 numBom = 4;
-                juegoL();
+                matrizL = matrizLogica();
                 juego();
                 break;
             case 2:
@@ -313,7 +353,7 @@ public class Gaspar_Laynez_201602755 {
                 nDif = 6;
                 matrizI = new String[nDif][nDif];
                 numBom = 8;
-                juegoL();
+                matrizL = matrizLogica();
                 juego();
                 break;
             case 3:
@@ -321,7 +361,7 @@ public class Gaspar_Laynez_201602755 {
                 nDif = 8;
                 matrizI = new String[nDif][nDif];
                 numBom = 12;
-                juegoL();
+                matrizL = matrizLogica();
                 juego();
                 break;
             case 4:
@@ -338,17 +378,20 @@ public class Gaspar_Laynez_201602755 {
     
     // Muesta menu de texto, pide un numero integer, regresa integer selecionado
     public static void menuText(){
-
-         
-
         
-        System.out.println("                    BUSCAMINAS!!!");
-        System.out.println("                    1. Principiante");
-        System.out.println("                    2. Intermedio");
-        System.out.println("                    3. Experto");
-        System.out.println("                    4. Salir!");
-        System.out.println("Ingrese Opcion; ");
-        opMenu1 = opEMenu1.nextInt();
+        // Validacion para solo recibir numeros
+        try{
+            System.out.println("                    BUSCAMINAS!!!");
+            System.out.println("                    1. Principiante");
+            System.out.println("                    2. Intermedio");
+            System.out.println("                    3. Experto");
+            System.out.println("                    4. Salir!");
+            System.out.println("Ingrese Opcion; ");
+            opMenu1 = opEMenu1.nextInt();
+        }catch(InputMismatchException e){
+            opEMenu1.nextLine();
+        }
+
         
     }
     
