@@ -145,7 +145,9 @@ public class Gaspar_Laynez_201602755 {
         }
         
         System.out.println("");
-
+        System.out.println("                    Nota: -1 representa bomba");
+        System.out.println("");
+        
         // Matriz Interfase asigna [X] a la matriz que el usuario mira
         for(int i = 0; i < matrizI.length;i++){
             for(int j = 0; j < matrizI.length;j++){
@@ -172,8 +174,8 @@ public class Gaspar_Laynez_201602755 {
             }
             System.out.println("");
         }
-        
         System.out.println("");
+        System.out.println("                    Nota: -1 representa bomba");
     }
     
     // Chequea cordenada ingresada y la pone en matriz Interfase para ser mostrada
@@ -293,7 +295,7 @@ public class Gaspar_Laynez_201602755 {
             System.out.println("");
             mSolucion();
             System.out.println("");
-            System.out.println("Nota: -1 representa bomba");
+            System.out.println("                        Nota: -1 representa bomba");
             
             // Despues de ganar preguntar si quiero volver a jugar
             System.out.println("");
@@ -327,9 +329,8 @@ public class Gaspar_Laynez_201602755 {
             System.out.println("                        PERDIO!!! :(");
             System.out.println();
             mSolucion();
-            System.out.println("");
-            System.out.println("Nota: -1 representa bomba");
             
+            System.out.println("");
             // que hacer si el usuario pierde?  y si quiere volver a jugar o no
             System.out.print("Desea volvera jugar? Y o N: ");
             char volverPerdio = scV.next().trim().charAt(0);
@@ -400,7 +401,7 @@ public class Gaspar_Laynez_201602755 {
                 menu();
                 break;
                 
-                // no haga nada para inicializar.
+            // no haga nada para inicializar.
             case 'n':
                 break;
             default: 
@@ -432,7 +433,7 @@ public class Gaspar_Laynez_201602755 {
         
         do{
             menuText();
-            
+
         switch(opMenu1){
             case 1:
                 opcJuego = 'n';
